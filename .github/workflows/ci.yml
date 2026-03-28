@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: CI Docker Pipeline
 
 on:
   push:
@@ -9,14 +9,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Récupérer le code
-      uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-    - name: Installer Java
-      uses: actions/setup-java@v3
+    - name: Setup Java
+      uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
         java-version: '21'
 
-    - name: Build avec Maven
-      run: mvn clean package
+    - name: Build JAR
+      run: mvn clean package -DskipTests
+
+    - name: Build Docker image
+      run: docker build -t taskapp .
