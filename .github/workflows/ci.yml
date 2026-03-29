@@ -31,3 +31,8 @@ jobs:
 
     - name: Push Docker image
       run: docker push ${{ secrets.DOCKER_USERNAME }}/taskapp:latest
+    - name: Deploy (simulate local)
+      run: |
+        docker stop taskapp || true
+        docker rm taskapp || true
+        docker run -d -p 8080:8080 --name taskapp ${{ secrets.DOCKER_USERNAME }}/taskapp:latest
